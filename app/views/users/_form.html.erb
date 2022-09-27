@@ -1,0 +1,63 @@
+<div data-controller="hello">
+  
+  <h1>
+    Current value
+    <input data-hello-target="magic" type="text">
+  </h1>
+  
+  <%= form_with(model: user, data:{action:"submit->hello#submit"}) do |form| %>
+    <% if user.errors.any? %>
+      <div class="form-group " style="color: red">
+        <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+        <ul>
+          <% user.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="row form-group">
+      <%= form.label :full_name %>
+      <%= form.text_field :full_name, data: {action: 'keyup->hello#currentChange'}, class: 'form-control col-md-9'  %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :gender%><br>
+      <%= form.label :gender, "Male", value: "male" %>
+      <%= form.radio_button :gender, 'male',  data: {action: 'change->hello#currentChange'} %>
+      <%= form.label :gender, "Female", value: "female" %> 
+      <%= form.radio_button :gender, 'female', data: {action: 'change->hello#currentChange'}%>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :description %>
+      <%= form.text_field :description, data: {action: 'keyup->hello#currentChange'} %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :dob %>
+      <%= form.date_field :dob, data: {action: 'change->hello#currentChange'} %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :security_question %>
+      <%= form.collection_select :security_question_id, SecurityQuestion.all, :id, :title, {selected: form.object.security_question_id}, data: { action: "change->hello#currentChange" } %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :security_answer %>
+      <%= form.text_field :security_answer, data: {action: 'keyup->hello#currentChange'} %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :accept_terms %> 
+      <%= form.check_box :accept_terms, data: {action: 'change->hello#currentChange'} %> 
+    </div>
+
+    <div class="form-group">
+      <%= form.submit 'Submit', class:"btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
